@@ -1,21 +1,21 @@
 package main
 
 import (
-	"database/sql"
 	"fmt"
 	"log"
 	"net/url"
 	"time"
 
-	_ "github.com/go-sql-driver/mysql"
 	"github.com/labstack/echo"
 	"github.com/spf13/viper"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 
-	_articleHttpDelivery "github.com/bxcodec/go-clean-arch/article/delivery/http"
-	_articleHttpDeliveryMiddleware "github.com/bxcodec/go-clean-arch/article/delivery/http/middleware"
-	_articleRepo "github.com/bxcodec/go-clean-arch/article/repository/mysql"
-	_articleUcase "github.com/bxcodec/go-clean-arch/article/usecase"
-	_authorRepo "github.com/bxcodec/go-clean-arch/author/repository/mysql"
+	_articleHttpDelivery "github.com/joao3101/go-base-project/article/delivery/http"
+	_articleHttpDeliveryMiddleware "github.com/joao3101/go-base-project/article/delivery/http/middleware"
+	_articleRepo "github.com/joao3101/go-base-project/article/repository/mysql"
+	_articleUcase "github.com/joao3101/go-base-project/article/usecase"
+	_authorRepo "github.com/joao3101/go-base-project/author/repository/mysql"
 )
 
 func init() {
@@ -41,18 +41,18 @@ func main() {
 	val.Add("parseTime", "1")
 	val.Add("loc", "Asia/Jakarta")
 	dsn := fmt.Sprintf("%s?%s", connection, val.Encode())
-	dbConn, err := sql.Open(`mysql`, dsn)
-
+	dbConn, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	sqlDB, err := dbConn.DB()
 	if err != nil {
 		log.Fatal(err)
 	}
-	err = dbConn.Ping()
+	err = sqlDB.Ping()
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	defer func() {
-		err := dbConn.Close()
+		err = sqlDB.Close()
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -61,8 +61,8 @@ func main() {
 	e := echo.New()
 	middL := _articleHttpDeliveryMiddleware.InitMiddleware()
 	e.Use(middL.CORS)
-	authorRepo := _authorRepo.NewMysqlAuthorRepository(dbConn)
-	ar := _articleRepo.NewMysqlArticleRepository(dbConn)
+	authorRepo := _authorRepo.NewAuthorRepository(dbConn)
+	ar := _articleRepo.NewArticleRepository(dbConn)
 
 	timeoutContext := time.Duration(viper.GetInt("context.timeout")) * time.Second
 	au := _articleUcase.NewArticleUsecase(ar, authorRepo, timeoutContext)

@@ -1,7 +1,5 @@
 package domain
 
-import "context"
-
 // Author ...
 type Author struct {
 	ID        int64  `json:"id"`
@@ -12,5 +10,5 @@ type Author struct {
 
 // AuthorRepository represent the author's repository contract
 type AuthorRepository interface {
-	GetByID(ctx context.Context, id int64) (Author, error)
+	GetByID(id int64) (Author, error)
 }

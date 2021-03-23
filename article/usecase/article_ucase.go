@@ -7,7 +7,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"golang.org/x/sync/errgroup"
 
-	"github.com/bxcodec/go-clean-arch/domain"
+	"github.com/joao3101/go-base-project/domain"
 )
 
 type articleUsecase struct {

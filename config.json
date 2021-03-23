@@ -7,11 +7,10 @@
     "timeout":2
   },
   "database": {
-      "host": "mysql",
-      "port": "3306",
-      "user": "user",
-      "pass": "password",
-      "name": "article"
+      "host": "tuffi.db.elephantsql.com",
+      "port": "5432",
+      "user": "nmxdqnvv",
+      "pass": "rvwyOM1gW7aKu9OqrXPLh9h9xd5SL077",
+      "name": "nmxdqnvv"
   }
-
 }

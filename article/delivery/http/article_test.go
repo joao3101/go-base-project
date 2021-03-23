@@ -9,15 +9,15 @@ import (
 	"testing"
 	"time"
 
-	"github.com/bxcodec/faker"
+	"github.com/joao3101/faker"
 	"github.com/labstack/echo"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 
-	articleHttp "github.com/bxcodec/go-clean-arch/article/delivery/http"
-	"github.com/bxcodec/go-clean-arch/domain"
-	"github.com/bxcodec/go-clean-arch/domain/mocks"
+	articleHttp "github.com/joao3101/go-base-project/article/delivery/http"
+	"github.com/joao3101/go-base-project/domain"
+	"github.com/joao3101/go-base-project/domain/mocks"
 )
 
 func TestFetch(t *testing.T) {
